@@ -1,0 +1,7 @@
+To Reproduce:
+
+run `./pants clean-all compile src/java::`
+
+If you change the pants version in the ./pants wrapper script to 0.0.39, this
+still succeeds.
+

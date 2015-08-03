@@ -1,0 +1,37 @@
+#!/usr/bin/env bash
+# Wrapper for self-bootstrapping virtualenv
+# Based on https://raw.githubusercontent.com/twitter/commons/master/build-support/virtualenv
+
+set -o errexit
+
+VIRTUALENV_VERSION=13.1.0
+CHECKSUM='70f63a429b7dd7c3e10f6af09ed32554'
+
+if which python2.7 >/dev/null; then
+  PY=`which python2.7`
+else
+  echo 'No python interpreter found on the path.  Python will not work!' 1>&2
+  exit 1
+fi
+
+echo "Using $PY" >&2
+
+HERE=$(cd `dirname "${BASH_SOURCE[0]}"` && pwd)
+if ! [ -f "${HERE}/virtualenv.dist/BOOTSTRAPPED-${VIRTUALENV_VERSION}" ]; then
+  pushd "${HERE}"
+    curl -O \
+      https://pypi.python.org/packages/source/v/virtualenv/virtualenv-${VIRTUALENV_VERSION}.tar.gz
+
+    DOWNLOAD_CHECKSUM=$(openssl md5 virtualenv-${VIRTUALENV_VERSION}.tar.gz | cut -d' ' -f2)
+    if [ "${CHECKSUM}" != "${DOWNLOAD_CHECKSUM}" ]; then
+      echo "Download failed, bad checksum: ${DOWNLOAD_CHECKSUM}"
+      exit 1
+    fi
+    tar zxvf virtualenv-${VIRTUALENV_VERSION}.tar.gz
+    touch virtualenv-${VIRTUALENV_VERSION}/BOOTSTRAPPED-${VIRTUALENV_VERSION}
+    rm -rf virtualenv.dist
+    mv virtualenv-${VIRTUALENV_VERSION} virtualenv.dist
+  popd
+fi
+
+exec "${PY}" "${HERE}/virtualenv.dist/virtualenv.py" "$@"

@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+# source:
+#   https://raw.githubusercontent.com/twitter/commons/master/pants
+
+source build-support/python/libvirtualenv.sh
+
+setup_virtualenv pants pantsbuild.pants==0.0.40
+
+exec pants "$@"

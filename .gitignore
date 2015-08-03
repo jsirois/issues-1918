@@ -1,0 +1,18 @@
+tags
+.pants.run
+.pids
+*.pyc
+.DS_Store
+
+# Ignored tool directories
+.pants.d/
+/dist/
+*.sublime-project
+*.sublime-workspace
+
+# Pants artifacts
+build-support/*.pex
+build-support/*.venv
+build-support/virtualenv-*
+build-support/virtualenv.*
+build-support/phab/

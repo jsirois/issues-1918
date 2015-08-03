@@ -1,0 +1,9 @@
+java_library(
+  name='foobar',
+  dependencies=[
+    'src/thrift/urbancompass:all_java_thrift_lib',
+    '3rdparty:libthrift',
+    '3rdparty:finagle-thrift',
+  ],
+  sources=globs('*.java'),
+)

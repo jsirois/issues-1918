@@ -1,0 +1,110 @@
+<?xml version="1.0"?>
+<!--
+Copyright 2015 UrbanCompass
+-->
+<ivysettings>
+  <!-- Speed up ivy resolution by trusting the local cache forever. -->
+  <property name="ivy.cache.ttl.default" value="eternal" override="false"/>
+
+  <!--
+    The ivy respository cache "~/.ivy2/compass/repository" can be uploaded/downloaded to s3 via
+    fab tasks.  Run `./scripts/fab -l | grep developer` to find the necessary tasks.
+   -->
+  <!--
+    Do *NOT* change this to override="true" as it breaks IntelliJ project generation.  Don't ask
+    me why.
+  -->
+  <property name="ivy.cache.dir" value="${user.home}/.ivy2/compass" override="false"/>
+  <caches default="default" lockStrategy="no-lock" useOrigin="true">
+    <cache name="default"/>
+  </caches>
+
+  <!--
+    Change the defaultResolver if you need to circumvent artifactory.
+    <settings defaultResolver="fallback"/>
+
+    Artifactory has been giving us many headaches, so we're going back to our old settings.
+  -->
+  <!-- <settings defaultResolver="main" /> -->
+  <settings defaultResolver="fallback" />
+  <credentials host="compass.artifactoryonline.com"
+               realm="Artifactory Realm"
+               username="ivysettings"
+               passwd="AP6bW1whJSCnRAf4nJXrSq4q12i8VRAihgM4qy" />
+  <resolvers>
+    <chain name="main">
+        <ibiblio name="artifactory-proxy" m2compatible="true"
+                 root="http://compass.artifactoryonline.com/compass/remote-repos"
+                 descriptor="required"/>
+      </chain>
+  </resolvers>
+
+  <resolvers>
+    <chain name="fallback">
+      <!--
+       Do *NOT* edit these remote repositories.  These are just for reference, to keep a functional
+       fallback in place while we evaluate using artifactory.
+
+       If you need to add an additional maven repo, it needs to be added to artifactory.
+      -->
+
+      <ibiblio name="maven2"
+               m2compatible="true"
+               usepoms="true"
+               descriptor="required"
+               root="https://repo1.maven.org/maven2/"/>
+
+      <!-- This is just for twitter-hosted jvm tools - kill once they are published to maven
+           central. -->
+      <ibiblio name="pantsbuild-maven-repo"
+               m2compatible="true"
+               usepoms="true"
+               descriptor="required"
+               root="https://dl.bintray.com/pantsbuild/maven/"/>
+
+      <!-- Deprecated twitter-hosted jvm tools -->
+      <ibiblio name="maven.twttr.com-maven"
+               m2compatible="true"
+               usepoms="true"
+               descriptor="required"
+               root="http://maven.twttr.com/"/>
+
+      <ibiblio name="apache"
+               m2compatible="true"
+               usepoms="true"
+               descriptor="required"
+               root="https://repository.apache.org/content/groups/public/"/>
+
+      <ibiblio name="google-releases"
+               m2compatible="true"
+               usepoms="true"
+               descriptor="required"
+               root="https://oss.sonatype.org/content/repositories/google-releases/"/>
+
+      <ibiblio name="jboss-public"
+               m2compatible="true"
+               usepoms="true"
+               descriptor="required"
+               root="http://repository.jboss.org/nexus/content/groups/public/"/>
+
+      <ibiblio name="maven2-repository.dev.java.net"
+               m2compatible="true"
+               usepoms="true"
+               descriptor="required"
+               root="http://download.java.net/maven/2/"/>
+
+      <ibiblio name="gson"
+               m2compatible="true"
+               usepoms="true"
+               descriptor="required"
+               root="http://google-gson.googlecode.com/svn/mavenrepo"/>
+
+      <ibiblio name="sendwithus"
+               m2compatible="true"
+               usepoms="true"
+               descriptor="required"
+               root="https://github.com/sendwithus/sendwithus-mvn-repo/raw/master/releases"/>
+
+    </chain>
+  </resolvers>
+</ivysettings>
